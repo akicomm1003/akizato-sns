@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>아키자토 홍보를 부탁해!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&family=Jua&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cork:#FFF3DB;
+    --ink:#4A3524;
+    --ink-soft:#8A7355;
+    --paper:#FFFFFF;
+    --accent:#FFD23F;
+    --accent-deep:#F0A500;
+    --accent-ink:#7A4E00;
+    --line:#F0DFA0;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    min-height:100vh; background:var(--cork); color:var(--ink);
+    font-family:'Noto Sans KR', sans-serif; line-height:1.6;
+    padding:0 16px 60px;
+  }
+
+  .wrap{ max-width:420px; margin:0 auto; }
+
+  /* 게시판과 같은 간판 */
+  .signboard{
+    margin:34px auto 22px; text-align:center;
+    background:var(--paper); border-radius:16px;
+    padding:26px 24px 20px; box-shadow:0 6px 16px rgba(74,53,36,0.12);
+    position:relative; border:1.5px solid var(--line);
+  }
+  .signboard .pin{
+    position:absolute; top:-9px; left:50%; transform:translateX(-50%);
+    width:17px; height:17px; border-radius:50%; background:#D8453C;
+    box-shadow:0 2px 3px rgba(0,0,0,0.25), inset 0 1px 1px rgba(255,255,255,0.4);
+  }
+  .signboard h1{ margin:0 0 6px; font-size:23px; font-weight:400; font-family:'Jua','Noto Sans KR',sans-serif; line-height:1.2; color:var(--ink); }
+  .signboard p{ margin:0; font-size:13px; line-height:1.4; color:var(--ink-soft); word-break:keep-all; }
+
+  /* 게시판 작성란과 같은 선택 패널 */
+  .panel{
+    background:var(--paper); border-radius:14px; padding:18px 20px 16px;
+    box-shadow:0 6px 16px rgba(74,53,36,0.1); margin-bottom:22px;
+  }
+  .panel label{ font-size:12px; color:var(--ink-soft); font-weight:700; display:block; margin:0 0 6px; }
+  .panel select{
+    width:100%; font-family:inherit; font-size:14px; color:var(--ink);
+    border:1.5px solid var(--line); border-radius:10px; padding:10px 36px 10px 12px;
+    background:#FFFBF2 url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%238A7355' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/></svg>") no-repeat right 14px center;
+    appearance:none; -webkit-appearance:none; cursor:pointer;
+  }
+  .panel select:focus{ outline:none; border-color:var(--accent-deep); }
+  .panel .note-line{ font-size:11.5px; color:var(--ink-soft); margin:8px 0 0; line-height:1.5; word-break:keep-all; }
+
+  /* 인스타그램 카드 */
+  .card{
+    background:#fff; border:1px solid #dbdbdb; border-radius:10px;
+    overflow:hidden; font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR',sans-serif;
+    box-shadow:0 6px 16px rgba(74,53,36,0.08);
+  }
+  .card-header{ display:flex; align-items:center; gap:10px; padding:11px 12px; }
+  .avatar-ring{
+    flex:0 0 auto; padding:2px; border-radius:50%;
+    background:linear-gradient(45deg,#FFD23F,#F0A500 55%,#D8453C);
+  }
+  .avatar-ring .gap{ padding:2px; border-radius:50%; background:#fff; }
+  .avatar{
+    width:32px; height:32px; border-radius:50%;
+    background:#f0f0f0 center/cover no-repeat;
+    display:flex; align-items:center; justify-content:center; overflow:hidden;
+    background-image:radial-gradient(circle at 50% 40%, #FFD23F 0%, #F0A500 100%);
+  }
+  .avatar svg{ width:17px; height:17px; stroke:#fff; fill:none; stroke-width:2; }
+  .uname{
+    font-size:13.5px; font-weight:700; color:#262626;
+    user-select:none; -webkit-user-select:none;
+  }
+  .dots{ margin-left:auto; font-size:18px; color:#262626; line-height:1; letter-spacing:1px; }
+
+  .postimg{
+    width:100%; aspect-ratio:1/1; background:#fafafa;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; background-size:cover; background-position:center;
+    color:#b0aca4; font-size:12.5px; text-align:center; flex-direction:column; gap:6px;
+  }
+  .postimg svg{ width:34px; height:34px; stroke:#c7c2b8; }
+
+  .icon-row{ display:flex; align-items:center; gap:14px; padding:10px 12px 4px; }
+  .icon-row svg{ width:23px; height:23px; stroke:#262626; fill:none; stroke-width:1.6; }
+  .icon-row .spacer{ flex:1; }
+
+  .likes{ padding:2px 12px 4px; font-size:13px; font-weight:700; color:#262626; user-select:none; -webkit-user-select:none; }
+
+  .caption{ padding:2px 12px 6px; font-size:13.5px; color:#262626; white-space:pre-wrap; word-break:break-word; }
+  .caption .capText{ outline:none; cursor:text; }
+  .caption b{ font-weight:700; margin-right:4px; }
+
+  .view-comments{ padding:0 12px 2px; font-size:13px; color:#8e8e8e; user-select:none; -webkit-user-select:none; }
+  .time{ padding:2px 12px 0; font-size:10.5px; color:#8e8e8e; letter-spacing:0.2px; user-select:none; -webkit-user-select:none; }
+
+  .comment-row{ padding:8px 12px 14px; font-size:13px; color:#a8a8a8; border-top:1px solid #efefef; margin-top:10px; }
+
+  .hint{ text-align:center; font-size:11.5px; color:var(--ink-soft); margin-top:12px; }
+
+  .toolbar{ display:flex; gap:10px; justify-content:center; margin-top:22px; flex-wrap:wrap; }
+  .btn{
+    border:none; padding:11px 20px; border-radius:999px; font-size:13.5px; cursor:pointer;
+    background:var(--accent); color:var(--accent-ink); font-weight:700; font-family:inherit;
+  }
+  .btn:hover{ background:#FFD35C; }
+  .btn.ghost{ background:#F5EDD6; color:var(--ink-soft); }
+  .btn.ghost:hover{ background:#EFE3C2; }
+
+  input[type=file]{ display:none; }
+
+  .toast{
+    position:fixed; bottom:22px; left:50%; transform:translateX(-50%);
+    background:var(--ink); color:#fff; padding:9px 18px; border-radius:999px;
+    font-size:12.5px; z-index:200; opacity:0; transition:opacity .25s; pointer-events:none;
+    max-width:90vw; text-align:center;
+  }
+  .toast.show{ opacity:0.95; }
+
+  @media (max-width:480px){
+    body{ padding:0 12px 50px; }
+    .signboard{ margin-top:28px; padding:20px 16px 16px; }
+    .signboard h1{ font-size:18px; }
+    .btn{ min-height:40px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <div class="signboard">
+    <div class="pin"></div>
+    <h1>아키자토 홍보를 부탁해!</h1>
+    <p>우리 마을 아키자토를 홍보하기 위한 게시글을 작성해 주세요!</p>
+  </div>
+
+  <div class="panel">
+    <label for="presetSelect">준비된 사진 고르기</label>
+    <select id="presetSelect"></select>
+    <p class="note-line">사진이나 그림 첨부가 어려울 시 목록에서 선택할 수 있습니다.</p>
+  </div>
+
+  <div class="card" id="card">
+    <div class="card-header">
+      <div class="avatar-ring"><div class="gap">
+        <div class="avatar" id="avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg></div>
+      </div></div>
+      <div class="uname">akizato_official</div>
+      <div class="dots">···</div>
+    </div>
+
+    <div class="postimg" id="postimg" title="클릭해서 이미지 올리기">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 17l-6-6-4 4-3-3-5 5"/></svg>
+      <span>클릭해서 사진 올리기</span>
+    </div>
+
+    <div class="icon-row">
+      <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/></svg>
+      <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22 11 13 2 9z"/></svg>
+      <div class="spacer"></div>
+      <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1Z"/></svg>
+    </div>
+
+    <div class="likes">좋아요 1011개</div>
+
+    <div class="caption" id="caption"><b>akizato_official</b><span class="capText" id="capText" contenteditable="plaintext-only" spellcheck="false">아키자토에 놀러오세요! #아키자토 #秋里のコンフェティ</span></div>
+
+    <div class="view-comments">댓글 12개 모두 보기</div>
+    <div class="time">방금 전</div>
+
+    <div class="comment-row">댓글 달기...</div>
+  </div>
+
+  <div class="toolbar">
+    <button class="btn" onclick="downloadImage()">📥 이미지로 저장</button>
+    <button class="btn ghost" onclick="resetCard()">되돌리기</button>
+  </div>
+</div>
+
+<input type="file" id="postImgInput" accept="image/*">
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+/* ──────────────────────────────────────────────
+   준비된 사진 목록
+   이름(name)은 드롭다운에 보이는 글자이고,
+   url에는 이미지 주소를 붙여 넣으면 됩니다.
+   url이 비어 있으면 "준비 중"으로 안내됩니다.
+   fx, fy는 정사각형으로 자를 때의 중심 위치입니다(0~1, 0.5가 가운데).
+   예: 위쪽을 살리고 싶으면 fy를 0.3처럼 낮추세요.
+   항목을 늘리려면 줄을 하나 더 추가하세요.
+   ────────────────────────────────────────────── */
+const PRESET_IMAGES = [
+  { name: '등산길',     url: 'https://images.unsplash.com/photo-1478555718543-a87aa261dbc4?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D', fx: 0.5, fy: 0.5 },
+  { name: '강변 단풍길', url: 'https://images.unsplash.com/photo-1633542998187-cbe62b27c1f3?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D', fx: 0.5, fy: 0.5 },
+  { name: '풍경',       url: 'https://images.unsplash.com/photo-1700405761531-bda71d69529e?q=80&w=1287&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D', fx: 0.5, fy: 0.5 },
+];
+
+const DEFAULT_CAPTION = '아키자토에 놀러오세요! #아키자토 #秋里のコンフェティ';
+const EMPTY_POST_HTML = '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 17l-6-6-4 4-3-3-5 5"/></svg><span>클릭해서 사진 올리기</span>';
+
+let saveBlocked = false;   // 불러온 사진이 저장을 막는 경우 true
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(showToast._timer);
+  showToast._timer = setTimeout(()=>t.classList.remove('show'), 2600);
+}
+
+/* 게시 이미지 직접 업로드 */
+const postimg = document.getElementById('postimg');
+const postImgInput = document.getElementById('postImgInput');
+const presetSelect = document.getElementById('presetSelect');
+
+function setPostImage(src, fx = 0.5, fy = 0.5){
+  postimg.style.backgroundImage = `url('${src}')`;
+  postimg.style.backgroundPosition = `${fx*100}% ${fy*100}%`;
+  postimg.innerHTML = '';
+}
+
+function clearPostImage(){
+  postimg.style.backgroundImage = '';
+  postimg.style.backgroundPosition = 'center';
+  postimg.innerHTML = EMPTY_POST_HTML;
+  saveBlocked = false;
+}
+
+postimg.addEventListener('click', ()=> postImgInput.click());
+postImgInput.addEventListener('change', e=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ev=>{
+    setPostImage(ev.target.result);
+    saveBlocked = false;
+    presetSelect.value = '';
+  };
+  reader.readAsDataURL(file);
+});
+
+/* 준비된 사진 고르기 (드롭다운) */
+function buildPresetOptions(){
+  presetSelect.innerHTML = '';
+  const first = document.createElement('option');
+  first.value = '';
+  first.textContent = '직접 업로드 (선택 안 함)';
+  presetSelect.appendChild(first);
+  PRESET_IMAGES.forEach(item=>{
+    const o = document.createElement('option');
+    o.value = item.name;
+    o.textContent = item.name;
+    presetSelect.appendChild(o);
+  });
+}
+buildPresetOptions();
+
+/* 이미지를 안전하게 저장할 수 있도록 같은 화면에서 한 번 그려서 데이터로 바꿉니다.
+   사이트가 허용하지 않으면 사진은 보여 주되 저장은 막고 안내합니다. */
+function loadPreset(item){
+  showToast('사진을 불러오는 중...');
+  const withCors = new Image();
+  withCors.crossOrigin = 'anonymous';
+  withCors.onload = ()=>{
+    try{
+      const w = withCors.naturalWidth, h = withCors.naturalHeight;
+      const side = Math.min(w, h);                       // 1:1로 자르기
+      const sx = (w - side) * (item.fx ?? 0.5);
+      const sy = (h - side) * (item.fy ?? 0.5);
+      const out = Math.min(side, 1200);
+      const c = document.createElement('canvas');
+      c.width = out; c.height = out;
+      c.getContext('2d').drawImage(withCors, sx, sy, side, side, 0, 0, out, out);
+      setPostImage(c.toDataURL('image/jpeg', 0.9));
+      saveBlocked = false;
+      showToast('사진을 불러왔어요');
+    }catch(err){
+      setPostImage(item.url, item.fx ?? 0.5, item.fy ?? 0.5);
+      saveBlocked = true;
+      showToast('사진은 보이지만 이미지 저장이 막혀 있어요. 직접 올리기를 이용해 주세요');
+    }
+  };
+  withCors.onerror = ()=>{
+    const plain = new Image();
+    plain.onload = ()=>{
+      setPostImage(item.url, item.fx ?? 0.5, item.fy ?? 0.5);
+      saveBlocked = true;
+      showToast('사진은 보이지만 이미지 저장이 막혀 있어요. 직접 올리기를 이용해 주세요');
+    };
+    plain.onerror = ()=>{
+      presetSelect.value = '';
+      showToast('사진을 불러오지 못했어요. 링크를 확인해 주세요');
+    };
+    plain.src = item.url;
+  };
+  withCors.src = item.url;
+}
+
+presetSelect.addEventListener('change', ()=>{
+  const item = PRESET_IMAGES.find(i => i.name === presetSelect.value);
+  if(!item){                       // "직접 업로드 (선택 안 함)" → 사진 칸을 처음 상태로
+    clearPostImage();
+    return;
+  }
+  if(!item.url){
+    presetSelect.value = '';
+    showToast('이 사진은 아직 준비 중이에요');
+    return;
+  }
+  loadPreset(item);
+});
+
+/* 이미지로 저장 */
+function downloadImage(){
+  if(saveBlocked){
+    showToast('이 사진은 저장이 막혀 있어요. 다른 사진을 고르거나 직접 올려 주세요');
+    return;
+  }
+  const card = document.getElementById('card');
+  showToast('이미지를 만드는 중...');
+  html2canvas(card, {backgroundColor:'#ffffff', scale:2, useCORS:true}).then(canvas=>{
+    const link = document.createElement('a');
+    link.download = 'akizato-post.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    showToast('저장 완료! 다운로드 폴더를 확인해주세요');
+  }).catch(()=>{
+    showToast('저장에 실패했어요. 다시 시도해주세요');
+  });
+}
+
+function resetCard(){
+  postimg.style.backgroundImage = '';
+  postimg.style.backgroundPosition = 'center';
+  postimg.innerHTML = EMPTY_POST_HTML;
+  presetSelect.value = '';
+  saveBlocked = false;
+  document.getElementById('capText').textContent = DEFAULT_CAPTION;
+  showToast('초기화했어요');
+}
+</script>
+</body>
+</html>
